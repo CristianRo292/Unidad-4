@@ -3,100 +3,108 @@ hacer un programa en tkinter que en una ventana mediante
 una caja de texto lea un numero, ese numero se enviara a
 otra ventana donde en un lisbiu, mostrara ese numero, el numero de veces
 '''
+# Descripción del programa / Program description
 
-from tkinter import *
-from tkinter import messagebox
-from tkinter import ttk
+
+from tkinter import *  # importa todo tkinter / import all tkinter
+from tkinter import messagebox  # para mensajes emergentes / for popup messages
+from tkinter import ttk  # widgets mejorados / improved widgets
+
 
 class Principal():
     def __init__(self, master):
-        self.vetana = master # vetanatana primaria para todo el programa
-        self.vetana.title("Practica  1 Parcial 3")  # 🏷️ Título de la vetanatana / Sets window title
-        # self.val = validaciones1()  # 🧩 Crea un objeto de la clase validaciones1 / Creates an instance of validation class
-        ancho_vetanatana  = 250  # 📏 Ancho de la vetanatana / Window width
-        alto_vetanatana = 200  # 📐 Alto de la vetanatana / Window height
+        self.vetana = master  # ventana principal / main window
+        self.vetana.title("Practica  1 Parcial 3")  # título de ventana / window title
+        
+        ancho_vetanatana  = 250  # ancho de ventana / window width
+        alto_vetanatana = 200  # alto de ventana / window height
 
-        # ⚙️ Obtiene el ancho y alto de la pantalla en milímetros / Gets screen width and height in millimeters
-        # Obtener dimensiones de la pantalla
-        ancho_pantalla = self.vetana.winfo_screenwidth()
-        alto_pantalla = self.vetana.winfo_screenheight()
+        # obtener dimensiones de pantalla / get screen dimensions
+        ancho_pantalla = self.vetana.winfo_screenwidth()  # ancho pantalla / screen width
+        alto_pantalla = self.vetana.winfo_screenheight()  # alto pantalla / screen height
 
-        # Calcular posición para centrar
-        x = (ancho_pantalla // 2) - (ancho_vetanatana // 2)
-        y = (alto_pantalla // 2) - (alto_vetanatana // 2)
+        # calcular posición centrada / calculate centered position
+        x = (ancho_pantalla // 2) - (ancho_vetanatana // 2)  # posición X centrada / centered X
+        y = (alto_pantalla // 2) - (alto_vetanatana // 2)  # posición Y centrada / centered Y
 
-        # Aplicar geometría
-        self.vetana.geometry(f"{ancho_vetanatana}x{alto_vetanatana}+{x}+{y}")
+        # aplicar geometría / apply geometry
+        self.vetana.geometry(f"{ancho_vetanatana}x{alto_vetanatana}+{x}+{y}")  # asigna tamaño / set size
     
     def inicio(self):
-        Label(self.vetana, text = "Numero: ").place(x = 100, y = 50)
-        self.nume1 = Entry(self.vetana)
-        self.nume1.place(x = 60, y = 100)
-        Button(self.vetana, text = "Enviar", command = self.enviar).place(x = 100, y = 150)
-        Button(self.vetana, text = "Salir", command = self.destruir).place(x = 200, y = 150)
+        Label(self.vetana, text = "Numero: ").place(x = 100, y = 50)  # etiqueta / label
+        self.nume1 = Entry(self.vetana)  # caja de texto / text box
+        self.nume1.place(x = 60, y = 100)  # posición entrada / entry position
+
+        Button(self.vetana, text = "Enviar", command = self.enviar).place(x = 100, y = 150)  # botón enviar / send button
+        Button(self.vetana, text = "Salir", command = self.destruir).place(x = 200, y = 150)  # botón salir / exit button
 
     def enviar(self):
         try:
-            if len(self.nume1.get()) <= 0:
-                messagebox.showerror("Error", "Campo Basio")
-                return 1
+            if len(self.nume1.get()) <= 0:  # valida campo vacío / validate empty field
+                messagebox.showerror("Error", "Campo Basio")  # error si vacío / empty field error
+                return 1  # termina función / exit function
             
-            numero = int(self.nume1.get())
-            self.nume1.delete(0, END)
-            self.vetana.withdraw() # oculto esta vetana
-            nuevaVen = Toplevel(self.vetana)
-            Ventana_lista(nuevaVen, self.vetana, numero)
+            numero = int(self.nume1.get())  # convierte a entero / convert to int
+            self.nume1.delete(0, END)  # limpia caja / clear entry
+            self.vetana.withdraw()  # ocultar ventana / hide window
+
+            nuevaVen = Toplevel(self.vetana)  # nueva ventana / new window
+            Ventana_lista(nuevaVen, self.vetana, numero)  # envía número a segunda ventana / send number
 
         except ValueError: 
-            messagebox.showerror("Error", "No son numeros")
-            self
-    
-    def destruir(self):
+            messagebox.showerror("Error", "No son numeros")  # error si no es entero / error if not integer
+            self  # instrucción sin efecto / no effect
 
-        self.vetana.destroy()
+    def destruir(self):
+        self.vetana.destroy()  # cerrar ventana / destroy window
+
 
 class Ventana_lista():
-    def __init__(self, master,vetana, dato):
-        self.ventaPrimaria = vetana
-        self.numero = dato
-        self.vetnanaSec = master
-        self.vetnanaSec.title("Resultado de numero")  # 🏷️ Título de la vetanatana / Sets window title
-        # self.val = validaciones1()  # 🧩 Crea un objeto de la clase validaciones1 / Creates an instance of validation class
-        ancho_vetanatana  = 250  # 📏 Ancho de la vetanatana / Window width
-        alto_vetanatana = 200  # 📐 Alto de la vetanatana / Window height
+    def __init__(self, master, vetana, dato):
+        self.ventaPrimaria = vetana  # referencia ventana principal / main window reference
+        self.numero = dato  # número recibido / received number
+        self.vetnanaSec = master  # ventana secundaria / secondary window
 
-        # ⚙️ Obtiene el ancho y alto de la pantalla en milímetros / Gets screen width and height in millimeters
-        # Obtener dimensiones de la pantalla
-        ancho_pantalla = self.vetnanaSec.winfo_screenwidth()
-        alto_pantalla = self.vetnanaSec.winfo_screenheight()
+        self.vetnanaSec.title("Resultado de numero")  # título / title
+        
+        ancho_vetanatana  = 250  # ancho ventana / window width
+        alto_vetanatana = 200  # alto ventana / window height
 
-        # Calcular posición para centrar
-        x = (ancho_pantalla // 2) - (ancho_vetanatana // 2)
-        y = (alto_pantalla // 2) - (alto_vetanatana // 2)
+        # obtener dimensiones pantalla / get screen dimensions
+        ancho_pantalla = self.vetnanaSec.winfo_screenwidth()  # ancho pantalla / screen width
+        alto_pantalla = self.vetnanaSec.winfo_screenheight()  # alto pantalla / screen height
 
-        # Aplicar geometría
-        self.vetnanaSec.geometry(f"{ancho_vetanatana}x{alto_vetanatana}+{x}+{y}")
-        self.inicio()
+        # calcular centro / calculate center
+        x = (ancho_pantalla // 2) - (ancho_vetanatana // 2)  # posición centrada X / centered X
+        y = (alto_pantalla // 2) - (alto_vetanatana // 2)  # posición centrada Y / centered Y
+
+        # aplicar geometría / apply geometry
+        self.vetnanaSec.geometry(f"{ancho_vetanatana}x{alto_vetanatana}+{x}+{y}")  # asignar tamaño y posición / set window geometry
+        
+        self.inicio()  # iniciar elementos / start UI
     
     def inicio(self):
-        Label(self.vetnanaSec, text = "Resultados de la Operacion").place(x = 50, y = 10)
-        self.miLista = Listbox(self.vetnanaSec, height = 10, width = 8, bg = "white")
-        self.miLista.place(x = 80, y = 30)
-        Button(self.vetnanaSec, text = "Regresar", command = self.volver).place(x = 10, y = 50)
-        self.ingresarDatos()
+        Label(self.vetnanaSec, text = "Resultados de la Operacion").place(x = 50, y = 10)  # etiqueta / label
+
+        self.miLista = Listbox(self.vetnanaSec, height = 10, width = 8, bg = "white")  # lista / listbox
+        self.miLista.place(x = 80, y = 30)  # posición / position
+
+        Button(self.vetnanaSec, text = "Regresar", command = self.volver).place(x = 10, y = 50)  # botón volver / return button
+        
+        self.ingresarDatos()  # cargar datos / load data
 
     def ingresarDatos(self):
 
-        for i in range(self.numero):
-            self.miLista.insert(END, self.numero) 
+        for i in range(self.numero):  # repetir según número / repeat according to number
+            self.miLista.insert(END, self.numero)  # insertar número / insert number
 
     def volver(self):
-        self.vetnanaSec.destroy()
-        self.ventaPrimaria.deiconify()
+        self.vetnanaSec.destroy()  # cerrar ventana secundaria / close secondary window
+        self.ventaPrimaria.deiconify()  # mostrar ventana principal / show main window
 
 
 if __name__ == "__main__":
-    master = Tk()
-    app = Principal(master)
-    app.inicio()
-    master.mainloop()
+    master = Tk()  # ventana raíz / root window
+    app = Principal(master)  # crear aplicación / create app
+    app.inicio()  # iniciar interfaz / start UI
+    master.mainloop()  # bucle principal / main loop
