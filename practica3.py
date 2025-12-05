@@ -165,13 +165,13 @@ class Principal():
         # Deletes from both tables using the ID
         cursor.execute("DELETE FROM productos WHERE id=?",(id,)) # (f"DELETE FROM usuarios WHERE id={id}")
         cursor.execute("DELETE FROM almacen WHERE id=?",(id,))
+        obBaseDatos.commit()
+        obBaseDatos.close()
         self.actualizarTabla()
         self.borrarCajas()
         self.btnAgregar.config(state= "normal")
         self.btnEliminar.config(state="disabled")
         self.btnModificar.config(state="disabled")
-        obBaseDatos.commit()
-        obBaseDatos.close()
         
 
     # Evento activado al seleccionar una fila en la tabla
